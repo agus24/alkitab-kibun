@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController ,AlertController, Loading } from 'ionic-angular';
+import { IonicPage, NavController,ModalController , NavParams, LoadingController ,AlertController, Loading } from 'ionic-angular';
 import { AlkitabProvider } from '../../providers/alkitab/alkitab';
 import { ListAlkitabDetailPage } from '../../pages/list-alkitab-detail/list-alkitab-detail';
+import { ModalAlkitabDetailPage } from "../modal-alkitab-detail/modal-alkitab-detail";
 
 /**
  * Generated class for the ListAlkitabPage page.
@@ -19,12 +20,16 @@ export class ListAlkitabPage {
     alkitab;
     loading;
     kitab;
+    pasal;
+    ayat;
+    firman;
 
   constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 private alertCtrl: AlertController,
                 private Alkitab: AlkitabProvider,
-                private loadingCtrl: LoadingController) {
+                private loadingCtrl: LoadingController,
+                public modalCtrl: ModalController) {
     this.showLoading();
       Alkitab.getKitab().subscribe(allowed => {
          if (allowed.allow) {
@@ -34,7 +39,23 @@ export class ListAlkitabPage {
            this.showError("Cannot Get Data");
          }
       });
-      console.log(this.alkitab);
+  }
+
+  cari() {
+    var kitab = this.kitab;
+    var pasal = this.pasal;
+    var ayat = this.ayat;
+    this.Alkitab.getFirman(kitab,pasal,ayat).subscribe(allowed => {
+      if(allowed.allow) {
+        console.log(allowed.result);
+        this.firman = allowed.result;
+        console.log(this.firman);
+        this.modalCtrl.create(ModalAlkitabDetailPage,{firman : this.firman}).present();
+      }
+      else{
+        this.showError("Error While Getting Data");
+      }
+    });
   }
 
   showDetailKitab(kitab:string) {

@@ -17,26 +17,26 @@
 
 
 <ion-content padding>
-    <ion-list>
+      <form (ngSubmit)="cari()" #registerForm="ngForm">
         <ion-item>
           <ion-label>Kitab</ion-label>
-          <ion-select [(ngModel)]="kitab">
-            <ion-option *ngFor="let value of alkitab" value="{{ value.kitab }}">{{ value.kitab }}</ion-option>
+          <ion-select popover name="kitab" [(ngModel)]="kitab" (change)="onCourseTypeChange($event.target.value, thisCourseTypeElement.selectedIndex)">
+            <ion-option *ngFor="let value of alkitab" value="{{ value.kitab }}" >{{ value.kitab }}</ion-option>
           </ion-select>
         </ion-item>
         <ion-item>
           <ion-label>Pasal</ion-label>
-          <ion-input type="number" name="pasal"></ion-input>
+          <ion-input type="number" [(ngModel)]="pasal" name="pasal"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>Ayat</ion-label>
-          <ion-input type="number" name="ayat"></ion-input>
+          <ion-input type="number" [(ngModel)]="ayat" (click)="this.ayat=''" name="ayat"></ion-input>
         </ion-item>
         <ion-item>
-          <button ion-button icon-right>
+          <button type="submit" ion-button icon-right full small>
             Search
-            <ion-icon name="home"></ion-icon>
+            <ion-icon name="arrow-forward"></ion-icon>
           </button>
         </ion-item>
-    </ion-list>
+      </form>
 </ion-content>

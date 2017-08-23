@@ -15,6 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ModalAlkitabDetailPage {
     firman;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
       console.log(navParams);
       this.firman = navParams.data.firman;

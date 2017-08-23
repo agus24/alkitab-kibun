@@ -48,6 +48,7 @@ export class AlkitabProvider {
       this.http.get("http://10.10.10.148/kibun-backend/public/api/getFirman/"+kitab+"/"+pasal+"/"+ayat)
         .subscribe(data => {
           var result = JSON.parse(data['_body']);
+          console.log(result);
           observer.next({allow : data.ok, result : result });
           observer.complete();
         }, error => {
