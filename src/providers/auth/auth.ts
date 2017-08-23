@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers  } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import * as localforage from 'localforage';
 import 'rxjs/add/operator/map';
 
 export class User {
@@ -14,7 +15,6 @@ export class User {
 }
 @Injectable()
 export class AuthProvider {
-    currentUser : User;
 
     public login(credentials) {
         if (credentials.username === null || credentials.password === null) {
@@ -24,25 +24,17 @@ export class AuthProvider {
             let headers = new Headers({ "Content-Type": "application/x-www-form-urlencoded" });
             let options = new RequestOptions({ headers: headers });
 
-            var postParams = {
-              username: credentials.username,
-              password: credentials.password
-            }
-            console.log(postParams);
-
-            this.http.post(`http://localhost/alkitab/public/api/login`, {
+            this.http.post(`http://10.10.10.148/kibun-backend/public/api/login`, {
                   username: credentials.username,
                   password: credentials.password
                 },options)
               .subscribe(data => {
-                  var result = JSON.parse(data['_body']);
-                  console.log(result);
-                  // console.log(result.name, result.email);
-                this.currentUser = new User(result['name'], result['email']);
+                var result = JSON.parse(data['_body']);
+                localStorage.setItem('name',result['name']);
+                localStorage.setItem('email',result['email']);
                 observer.next(data.ok);
                 observer.complete();
                }, error => {
-                   console.log(error);
                 observer.next(error.ok);
                 observer.complete();
               });
@@ -50,12 +42,16 @@ export class AuthProvider {
         }
       }
     getUserInfo(){
-      return this.currentUser;
+      return {
+        "username" : localStorage.getItem('name'),
+        "email" : localStorage.getItem('email')
+      };
     }
 
     logout() {
       return Observable.create(observer => {
-        this.currentUser = null;
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
         observer.next(true);
         observer.complete();
       });
@@ -63,5 +59,4 @@ export class AuthProvider {
   constructor(public http: Http) {
     console.log('Hello AuthProvider Provider');
   }
-
 }

@@ -25,7 +25,11 @@ export class LoginPage {
     constructor(private nav: NavController,
                  private alertCtrl: AlertController,
                  private auth : AuthProvider,
-                 private loadingCtrl: LoadingController) { }
+                 private loadingCtrl: LoadingController) {
+      if(localStorage.getItem('name') != undefined){
+        this.nav.setRoot(HomePage,{});
+      }
+    }
 
   login() {
       this.showLoading();
@@ -35,7 +39,7 @@ export class LoginPage {
       else{
           this.auth.login(this.loginData).subscribe(allowed => {
               if (allowed) {
-                this.nav.push(HomePage);
+                this.nav.setRoot(HomePage,{});
               } else {
                 this.showError("Access Denied");
               }
