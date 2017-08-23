@@ -11,14 +11,14 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class AlkitabProvider {
-
+url : "http://ctw-soft.com/alkitab/public/";
   constructor(public http: Http) {
     console.log('Hello AlkitabProvider Provider');
   }
 
   public getKitab() {
       return Observable.create(observer => {
-              this.http.get("http://10.10.10.148/kibun-backend/public/api/getKitab")
+              this.http.get("http://ctw-soft.com/alkitab/public/api/getKitab")
               .subscribe(data => {
                   var result = JSON.parse(data['_body']);
                   console.log(result);
@@ -32,7 +32,7 @@ export class AlkitabProvider {
   }
   public getAyatPasalList(kitab: string) {
       return Observable.create(observer => {
-              this.http.get("http://10.10.10.148/kibun-backend/public/api/getPasalAyat/"+kitab)
+              this.http.get("http://ctw-soft.com/alkitab/public/api/getPasalAyat/"+kitab)
               .subscribe(data => {
                   var result = JSON.parse(data['_body']);
                   observer.next({allow : data.ok, result : result });
@@ -45,7 +45,7 @@ export class AlkitabProvider {
   }
   public getFirman(kitab:string,pasal,ayat) {
     return Observable.create(observer => {
-      this.http.get("http://10.10.10.148/kibun-backend/public/api/getFirman/"+kitab+"/"+pasal+"/"+ayat)
+      this.http.get("http://ctw-soft.com/alkitab/public/api/getFirman/"+kitab+"/"+pasal+"/"+ayat)
         .subscribe(data => {
           var result = JSON.parse(data['_body']);
           console.log(result);
