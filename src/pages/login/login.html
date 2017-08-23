@@ -7,16 +7,26 @@
 <ion-header>
 
   <ion-navbar hideBackButton>
-    <ion-title>Login</ion-title>
+    <ion-title class="header">Login</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-    <form (ngSubmit)="login()" #registerForm="ngForm">
-    <ion-input [(ngModel)]="loginData.username" name="username" type="text" placeholder="username"></ion-input>
-    <ion-input [(ngModel)]="loginData.password" name="password" type="password" placeholder="password"></ion-input>
+<ion-content padding class="login-content">
+  <div class="login-box">
+      <form (ngSubmit)="login()" #registerForm="ngForm">
+        <ion-row>
+          <ion-col>
+            <ion-input required [(ngModel)]="loginData.username" name="username" type="text" placeholder="username"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-input required [(ngModel)]="loginData.password" name="password" type="password" placeholder="password"></ion-input>
+          </ion-col>
+        </ion-row>
         <button type="submit" ion-button>Submit</button>
-    </form>
+      </form>
+  </div>
 </ion-content>
