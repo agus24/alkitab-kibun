@@ -18,6 +18,7 @@ import { ListAlkitabDetailPage } from '../../pages/list-alkitab-detail/list-alki
 export class ListAlkitabPage {
     alkitab;
     loading;
+    kitab;
 
   constructor(public navCtrl: NavController,
                 public navParams: NavParams,

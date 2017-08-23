@@ -18,9 +18,25 @@
 
 <ion-content padding>
     <ion-list>
-        <button ion-item *ngFor="let kitab of alkitab" (click)="showDetailKitab(kitab.kitab)">
-          <h2>{{ kitab.kitab }}</h2>
-          <ion-icon name="arrow-forward" item-right></ion-icon>
-        </button>
+        <ion-item>
+          <ion-label>Kitab</ion-label>
+          <ion-select [(ngModel)]="kitab">
+            <ion-option *ngFor="let value of alkitab" value="{{ value.kitab }}">{{ value.kitab }}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pasal</ion-label>
+          <ion-input type="number" name="pasal"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ayat</ion-label>
+          <ion-input type="number" name="ayat"></ion-input>
+        </ion-item>
+        <ion-item>
+          <button ion-button icon-right>
+            Search
+            <ion-icon name="home"></ion-icon>
+          </button>
+        </ion-item>
     </ion-list>
 </ion-content>

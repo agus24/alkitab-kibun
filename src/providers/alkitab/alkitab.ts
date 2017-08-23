@@ -38,10 +38,22 @@ export class AlkitabProvider {
                   observer.next({allow : data.ok, result : result });
                   observer.complete();
                }, error => {
-                 observer.next(error.ok);
+                 observer.next({allow : error.ok});
                  observer.complete();
               });
           });
   }
-
+  public getFirman(kitab:string,pasal,ayat) {
+    return Observable.create(observer => {
+      this.http.get("http://10.10.10.148/kibun-backend/public/api/getFirman/"+kitab+"/"+pasal+"/"+ayat)
+        .subscribe(data => {
+          var result = JSON.parse(data['_body']);
+          observer.next({allow : data.ok, result : result });
+          observer.complete();
+        }, error => {
+            observer.next({allow : error.ok});
+            observer.complete();
+        });
+    })
+  }
 }
