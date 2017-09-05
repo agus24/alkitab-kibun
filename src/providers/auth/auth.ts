@@ -15,32 +15,48 @@ export class User {
 }
 @Injectable()
 export class AuthProvider {
-url : "http://ctw-soft.com/alkitab/public/";
+  url : "http://ctw-soft.com/alkitab/public/";
     public login(credentials) {
-        if (credentials.username === null || credentials.password === null) {
-          return Observable.throw("Please insert credentials");
-        } else {
-          return Observable.create(observer => {
-            let headers = new Headers({ "Content-Type": "application/x-www-form-urlencoded" });
-            let options = new RequestOptions({ headers: headers });
-
-            this.http.post(`http://ctw-soft.com/alkitab/public/api/login`, {
-                  username: credentials.username,
-                  password: credentials.password
-                },options)
-              .subscribe(data => {
-                var result = JSON.parse(data['_body']);
-                localStorage.setItem('name',result['name']);
-                localStorage.setItem('email',result['email']);
-                observer.next(data.ok);
-                observer.complete();
-               }, error => {
-                observer.next(error.ok);
-                observer.complete();
-              });
+      if (credentials.username === null || credentials.password === null) {
+        return Observable.throw("Please insert credentials");
+      } else {
+        return Observable.create(observer => {
+          firebase.auth().signInWithEmailAndPassword(credentials.username, credentials.password).then((data) => {
+            console.log(data);
+            observer.next({
+              message:"success",
+              status : true
+            });
+          }, error => {
+            observer.next({
+              message:error,
+              status : false
+            });
           });
-        }
+        });
       }
+    }
+
+    register(data) {
+      console.log(data)
+      return Observable.create(observer => {
+        firebase.auth().createUserWithEmailAndPassword(data.username,data.password).then(data => {
+          observer.next({
+            message : "success",
+            allow : true
+          });
+          observer.complete();
+        }, (error) => {
+          console.log(error)
+          observer.next({
+            message: error.message,
+            allow : false
+          });
+          observer.complete();
+        });
+      });
+    }
+
     getUserInfo(){
       return {
         "username" : localStorage.getItem('name'),
@@ -58,11 +74,27 @@ url : "http://ctw-soft.com/alkitab/public/";
     }
 
 
-  loginFacebook() {
-    var provider = new firebase.auth.FacebookAuthProvider();
-    provider.addScope('user_birthday');
-    provider.setCustomParameters({
-      'display': 'popup'
+  loginGoogle() {
+    return Observable.create(observer => {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      var user;
+      var auth = firebase.auth().signInWithPopup(provider).then(function(result) {
+        localStorage.setItem('token',result.credential.accessToken);
+        user = result.user;
+        localStorage.setItem('name',user.displayName);
+        localStorage.setItem('email',user.email);
+        observer.next({
+          message:"success",
+          status : true
+        });
+        observer.complete();
+      }).catch(function(error) {
+        observer.next({
+          message : error,
+          status : false
+        });
+        observer.complete();
+      });
     });
   }
   constructor(public http: Http) {

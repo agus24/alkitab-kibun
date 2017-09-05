@@ -18,7 +18,7 @@
       <form (ngSubmit)="login()" #registerForm="ngForm">
         <ion-row>
           <ion-col>
-            <ion-input required [(ngModel)]="loginData.username" name="username" type="text" placeholder="username"></ion-input>
+            <ion-input required [(ngModel)]="loginData.username" name="username" type="text" placeholder="email"></ion-input>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -27,6 +27,8 @@
           </ion-col>
         </ion-row>
         <button type="submit" ion-button>Submit</button>
+        <button type="button" ion-button (click)="register()">Register</button>
+        <button type="button" ion-button (click)="loginGoogle()">Login With Google</button>
       </form>
   </div>
 </ion-content>

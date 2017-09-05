@@ -38,16 +38,32 @@ export class LoginPage {
       }
       else{
           this.auth.login(this.loginData).subscribe(allowed => {
-              if (allowed) {
-                this.nav.setRoot(HomePage,{});
-              } else {
-                this.showError("Access Denied");
-              }
-            },
+            if (allowed.status) {
+              this.nav.setRoot(HomePage,{});
+            } else {
+              this.showError(allowed.message);
+            }
+          },
           error => {
             this.showError(error);
           });
       }
+  }
+  register() {
+    this.showLoading();
+    if(this.loginData.username == "" || this.loginData.password == "") {
+        this.showError("Username And Password Must Fill");
+    } else {
+      this.auth.register(this.loginData).subscribe(allowed => {
+        if(allowed.allow) {
+          this.loading.dismiss();
+        } else {
+          this.showError(allowed.message);
+        }
+      }, error => {
+        this.showError(error);
+      })
+    }
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
@@ -70,6 +86,21 @@ export class LoginPage {
       buttons: ['OK']
     });
     alert.present(prompt);
+  }
+
+  loginGoogle() {
+    this.showLoading();
+    this.auth.loginGoogle().subscribe(allowed => {
+      console.log(allowed)
+      if (allowed.status) {
+        this.nav.setRoot(HomePage,{});
+      } else {
+        this.showError(allowed.message);
+      }
+    },
+    error => {
+      this.showError(error);
+    });
   }
 
 }
