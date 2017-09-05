@@ -78,7 +78,11 @@ export class AuthProvider {
     return Observable.create(observer => {
       var provider = new firebase.auth.GoogleAuthProvider();
       var user;
-      var auth = firebase.auth().signInWithPopup(provider).then(function(result) {
+      alert('masuk');
+      firebase.auth().signInWithRedirect(provider);
+      alert('masuk');
+      firebase.auth().getRedirectResult().then(function(result) {
+        console.log(result);
         localStorage.setItem('token',result.credential.accessToken);
         user = result.user;
         localStorage.setItem('name',user.displayName);
@@ -90,7 +94,7 @@ export class AuthProvider {
         observer.complete();
       }).catch(function(error) {
         observer.next({
-          message : error,
+          message : error.message,
           status : false
         });
         observer.complete();

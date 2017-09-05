@@ -91,7 +91,6 @@ export class LoginPage {
   loginGoogle() {
     this.showLoading();
     this.auth.loginGoogle().subscribe(allowed => {
-      console.log(allowed)
       if (allowed.status) {
         this.nav.setRoot(HomePage,{});
       } else {
