@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers  } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import * as localforage from 'localforage';
+import * as firebase from "firebase";
 import 'rxjs/add/operator/map';
 
 export class User {
@@ -56,7 +56,25 @@ url : "http://ctw-soft.com/alkitab/public/";
         observer.complete();
       });
     }
+
+
+  loginFacebook() {
+    var provider = new firebase.auth.FacebookAuthProvider();
+    provider.addScope('user_birthday');
+    provider.setCustomParameters({
+      'display': 'popup'
+    });
+  }
   constructor(public http: Http) {
     console.log('Hello AuthProvider Provider');
+    var config = {
+        apiKey: "AIzaSyB63-KAHHizMrHIyyDeGW1l6kWJFzKtZkw",
+        authDomain: "alkitabkibun.firebaseapp.com",
+        databaseURL: "https://alkitabkibun.firebaseio.com",
+        projectId: "alkitabkibun",
+        storageBucket: "alkitabkibun.appspot.com",
+        messagingSenderId: "315411394638"
+      };
+      firebase.initializeApp(config);
   }
 }

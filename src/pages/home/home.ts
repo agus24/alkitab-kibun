@@ -17,6 +17,7 @@ export class HomePage {
 
   }
 
+
   ionViewDidLoad() {
     console.log(this.username);
   }
