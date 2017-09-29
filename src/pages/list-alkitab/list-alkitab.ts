@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController,ModalController , NavParams, LoadingController ,AlertController, Loading } from 'ionic-angular';
+import { IonicPage, NavController,ModalController , NavParams, LoadingController , AlertController, Loading } from 'ionic-angular';
 import { AlkitabProvider } from '../../providers/alkitab/alkitab';
 import { ListAlkitabDetailPage } from '../../pages/list-alkitab-detail/list-alkitab-detail';
 import { ModalAlkitabDetailPage } from "../modal-alkitab-detail/modal-alkitab-detail";

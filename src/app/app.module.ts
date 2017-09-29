@@ -15,6 +15,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth/auth';
 import { AlkitabProvider } from '../providers/alkitab/alkitab';
+import { OneSignal } from '@ionic-native/onesignal';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { AlkitabProvider } from '../providers/alkitab/alkitab';
   providers: [
     StatusBar,
     SplashScreen,
+    OneSignal,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     AlkitabProvider

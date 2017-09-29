@@ -15,7 +15,8 @@ export class User {
 }
 @Injectable()
 export class AuthProvider {
-url : "http://ctw-soft.com/alkitab/public/";
+  link = "http://gustiawan.com/kibun-backend/public/index.php";
+    
     public login(credentials) {
         if (credentials.username === null || credentials.password === null) {
           return Observable.throw("Please insert credentials");
@@ -24,7 +25,7 @@ url : "http://ctw-soft.com/alkitab/public/";
             let headers = new Headers({ "Content-Type": "application/x-www-form-urlencoded" });
             let options = new RequestOptions({ headers: headers });
 
-            this.http.post(`http://ctw-soft.com/alkitab/public/api/login`, {
+            this.http.post(this.link+`/api/login`, {
                   username: credentials.username,
                   password: credentials.password
                 },options)

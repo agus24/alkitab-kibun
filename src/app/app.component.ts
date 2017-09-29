@@ -9,10 +9,12 @@ import { LoginPage } from '../pages/login/login';
 import { ListAlkitabPage } from '../pages/list-alkitab/list-alkitab';
 
 import { AuthProvider } from "../providers/auth/auth";
+import { OneSignal } from "@ionic-native/onesignal";
 
 @Component({
   templateUrl: 'app.html'
 })
+
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
@@ -20,22 +22,40 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private auth:AuthProvider) {
+  constructor(private oneSignal: OneSignal, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private auth:AuthProvider) {
     this.initializeApp();
 
-    // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage },
       { title: 'List Alkitab', component: ListAlkitabPage }
     ];
 
+    this.oneSignal.startInit('faf1cd1c-6be4-43ca-adf5-d5a916861120', '315411394638');
+    
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+    
+    this.oneSignal.handleNotificationReceived().subscribe((received) => {
+      console.log(received);
+    });
+
+    this.oneSignal.enableSound(true);
+    this.oneSignal.enableVibrate(true);
+    
+    this.oneSignal.handleNotificationOpened().subscribe((result) => {
+      let data = result.notification.payload.additionalData;
+      
+      if(data.tipe == "reminder") {
+        console.log('reminder');
+      }
+    });
+    
+    this.oneSignal.endInit();
+
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -49,8 +69,6 @@ export class MyApp {
   }
 
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
 }
